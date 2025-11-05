@@ -65,6 +65,26 @@
         };
     };
 
+    combos {
+        compatible = "zmk,combos";
+
+        // Left hand: D+F for Ctrl+Shift (terminal paste, etc)
+        combo_ctrl_shift_left {
+            timeout-ms = <50>;
+            key-positions = <37 38>;  // D and F
+            bindings = <&sk LCTRL &sk LSHFT>;
+            layers = <0>;  // Only active on base layer
+        };
+
+        // Right hand: J+K for Ctrl+Shift (terminal copy, etc)
+        combo_ctrl_shift_right {
+            timeout-ms = <50>;
+            key-positions = <41 42>;  // J and K
+            bindings = <&sk RCTRL &sk RSHFT>;
+            layers = <0>;  // Only active on base layer
+        };
+    };
+
     behaviors  {
 
         // Home row mods - Left hand (including A for layer)
