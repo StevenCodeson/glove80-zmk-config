@@ -12,7 +12,17 @@
 
 / {
     behaviors {
-        // Home row mods - Left hand (S, D, F only - no A)
+        // Magic hold-tap behavior for accessing magic layer
+        magic: magic_hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MAGIC_HOLD_TAP";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&rgb_ug>;
+        };
+
+        // Home row mods - Left hand (including A for layer)
         hml: homerow_mods_left {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS_LEFT";
@@ -21,7 +31,7 @@
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
-            bindings = <&kp>, <&kp>;
+            bindings = <&mo>, <&kp>;  // Note: using &mo for layers
             hold-trigger-key-positions = <
                 5 6 7 8 9
                 16 17 18 19 20 21
@@ -34,7 +44,29 @@
             >;
         };
 
-        // Home row mods - Right hand (J, K, L only - no semicolon)
+        // Home row mods - Left hand mods only (S, D, F)
+        hml_mod: homerow_mods_left_mod {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS_LEFT_MOD";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;  // Using &kp for modifiers
+            hold-trigger-key-positions = <
+                5 6 7 8 9
+                16 17 18 19 20 21
+                28 29 30 31 32 33
+                40 41 42 43 44 45
+                58 59 60 61 62 63
+                75 76 77 78 79
+                55 56 57
+                72 73 74
+            >;
+        };
+
+        // Home row mods - Right hand (including ; for layer)
         hmr: homerow_mods_right {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS_RIGHT";
@@ -43,7 +75,29 @@
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
-            bindings = <&kp>, <&kp>;
+            bindings = <&mo>, <&kp>;  // Note: using &mo for layers
+            hold-trigger-key-positions = <
+                0 1 2 3 4
+                10 11 12 13 14 15
+                22 23 24 25 26 27
+                34 35 36 37 38 39
+                46 47 48 49 50 51
+                64 65 66 67 68
+                52 53 54
+                69 70 71
+            >;
+        };
+
+        // Home row mods - Right hand mods only (J, K, L)
+        hmr_mod: homerow_mods_right_mod {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS_RIGHT_MOD";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;  // Using &kp for modifiers
             hold-trigger-key-positions = <
                 0 1 2 3 4
                 10 11 12 13 14 15
@@ -65,9 +119,9 @@
                &kp F1    &kp F2   &kp F3    &kp F4     &kp F5                                                                                        &kp F6        &kp F7       &kp F8      &kp F9    &kp F10
             &kp EQUAL    &kp N1   &kp N2    &kp N3     &kp N4  &kp N5                                                                        &kp N6  &kp N7        &kp N8       &kp N9      &kp N0  &kp MINUS
               &kp TAB     &kp Q    &kp W     &kp E      &kp R   &kp T                                                                         &kp Y   &kp U         &kp I        &kp O       &kp P   &kp BSLH
-              &kp ESC     &lt 1 A  &hml LALT S  &hml LCTRL D  &hml LSHFT F   &kp G                                                                         &kp H  &hmr RSHFT J  &hmr RCTRL K  &hmr RALT L     &lt 3 SEMI    &kp SQT
+              &kp ESC     &hml 1 A  &hml_mod LALT S  &hml_mod LCTRL D  &hml_mod LSHFT F   &kp G                                                                         &kp H  &hmr_mod RSHFT J  &hmr_mod RCTRL K  &hmr_mod RALT L     &hmr 3 SEMI    &kp SQT
             &kp GRAVE     &kp Z    &kp X     &kp C      &kp V   &kp B   &kp LSHFT  &kp LCTRL  &kp LGUI  &kp LGUI  &kp RCTRL    &kp RSHFT   &kp N   &kp M  &kp COMMA   &kp DOT  &kp FSLH  &kp PG_UP
-         &mo 2        &kp HOME  &kp END  &kp LEFT  &kp RIGHT          &kp BSPC    &kp DEL  &kp LALT  &kp RALT    &kp RET    &kp SPACE          &kp UP   &kp DOWN  &kp LBKT  &kp RBKT  &kp PG_DN
+         &magic 2 RGB_STATUS  &kp HOME  &kp END  &kp LEFT  &kp RIGHT          &kp BSPC    &kp DEL  &kp LALT  &kp RALT    &kp RET    &kp SPACE          &kp UP   &kp DOWN  &kp LBKT  &kp RBKT  &kp PG_DN
             >;
         };
 
@@ -78,7 +132,7 @@
                &trans         &none           &none    &kp UP_ARROW            &none    &kp END                                                   &kp RPAR   &kp KP_N7     &kp KP_N8     &kp KP_N9     &kp KP_MINUS   &kp SLCK
                &trans         &none  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp PG_UP                                                   &kp PRCNT   &kp KP_N4     &kp KP_N5     &kp KP_N6      &kp KP_PLUS            &none
                &trans     &kp K_APP           &none         &kp F11          &kp F12  &kp PG_DN  &trans  &trans   &to 0  &trans  &trans  &trans  &kp COMMA   &kp KP_N1     &kp KP_N2     &kp KP_N3     &kp KP_ENTER           &trans
-         &mo 2         &kp CAPS         &kp INS         &kp F11          &kp F12             &trans  &trans  &trans  &trans  &trans  &trans              &kp KP_N0     &kp KP_N0    &kp KP_DOT     &kp KP_ENTER           &trans
+         &magic 2 RGB_STATUS  &kp CAPS         &kp INS         &kp F11          &kp F12             &trans  &trans  &trans  &trans  &trans  &trans              &kp KP_N0     &kp KP_N0    &kp KP_DOT     &kp KP_ENTER           &trans
             >;
         };
 
